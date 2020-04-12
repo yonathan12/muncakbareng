@@ -18,6 +18,7 @@ $router->get('/', function () use ($router) {
 });
 
 $router->post('/login', 'Login@index');
+$router->post('/register', 'Login@register');
 
 ## Route Group
 $router->group(

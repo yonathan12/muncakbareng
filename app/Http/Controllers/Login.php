@@ -24,10 +24,6 @@ class Login extends Controller
         // Find the user by email
         $user = User::where('email', $this->request->input('email'))->first();
         if (!$user) {
-            // You wil probably have some sort of helpers or whatever
-            // to make sure that you have the same response format for
-            // differents kind of responses. But let's return the 
-            // below respose for now.
             return response()->json([
                 'error' => 'Email does not exist.'
             ], 400);
@@ -56,5 +52,29 @@ class Login extends Controller
         // As you can see we are passing `JWT_SECRET` as the second parameter that will 
         // be used to decode the token in the future.
         return JWT::encode($payload, env('JWT_SECRET'));
+    }
+
+    public function register()
+    {
+        // Find the user by email
+        $prm = $this->request->input();
+        $email = User::where('email', $this->request->input('email'))->first();
+        if($email){
+            return response()->json([
+                'status' => 'true',
+                'message' => 'Email Sudah Terdaftar'
+            ], 200);
+        }else{
+            $data = new User();
+            $data->email = $prm['email'];
+            $data->password = password_hash($prm['password'], PASSWORD_BCRYPT);
+            $data->name = $prm['name'];
+            $data->phone = $prm['phone'];
+            $data->sex = $prm['sex'];
+            $data->brthdt = $prm['brthdt'];
+            $data->save();
+
+            return response(['data' => ['status' => 'true','message' => 'Selamat, Akun Berhasil Dibuat']]);
+        }
     }
 }

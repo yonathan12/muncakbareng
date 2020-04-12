@@ -20,6 +20,7 @@ class Todo extends Controller
 
     public function index()
     {
+        die(print_r(['asdasd'],1));
         //$data = ModelTodo::all(); // get data all table menggunakan Eloquent ORM Laravel
         $data = DB::select("SELECT id, activity, description from todo"); ## get data menggunakan Raw Query
         if($data){
