@@ -120,7 +120,6 @@ trait ProvidesConvenienceMethods
         if (isset(static::$errorFormatter)) {
             return call_user_func(static::$errorFormatter, $validator);
         }
-
         return $validator->errors()->getMessages();
     }
 

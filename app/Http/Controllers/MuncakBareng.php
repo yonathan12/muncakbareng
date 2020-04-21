@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
+
 class MuncakBareng extends BaseController
 {
     /**
@@ -9,14 +11,17 @@ class MuncakBareng extends BaseController
      *
      * @return void
      */
-    // public function __construct()
-    // {
-        
-    // }
 
     public function index()
     {
+        $tanggal = Carbon::now();
+        $curl = $this->curl("https://note.yonathanrizky.com/api/notes");
+        return $curl;
 
-        die(print_r(['extends basecontroller', $this->test],1));
+        // die(print_r([
+        //     'extends basecontroller',
+        //     $this->test,
+        //     $this->uid
+        // ], 1));
     }
 }

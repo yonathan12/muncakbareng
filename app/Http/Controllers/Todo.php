@@ -20,7 +20,7 @@ class Todo extends Controller
 
     public function index()
     {
-        die(print_r(['asdasd'],1));
+        // die(print_r(['asdasd'],1));
         //$data = ModelTodo::all(); // get data all table menggunakan Eloquent ORM Laravel
         $data = DB::select("SELECT id, activity, description from todo"); ## get data menggunakan Raw Query
         if($data){
@@ -73,7 +73,7 @@ class Todo extends Controller
         }else{
             $name = Null;
         }
-        
+        die(print_r([$request->input(), $resorce],1));
 
         $data = new ModelTodo();
         $data->activity = $request->input('activity');
@@ -85,6 +85,14 @@ class Todo extends Controller
     }
 
     public function update(Request $request, $id){
+        $resorce = $request->file('file');
+        // if($resorce){
+        //     $name = rand().$resorce->getClientOriginalName();
+        //     $resorce->move(\base_path() ."/public/file", $name);
+        // }else{
+        //     $name = Null;
+        // }
+        die(print_r([$request->input(), $resorce],1));
         $data = ModelTodo::where('id',$id)->first();
         $data->activity = $request->input('activity');
         $data->description = $request->input('description');

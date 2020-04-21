@@ -40,6 +40,15 @@ $router->group(
         ## Route put data by id
         $router->put('/api/{controller}/{id}', function (Request $request, $controller, $id) {
             $controller = ucwords($controller);
+            foreach ($request->input() as $key => $value) {
+                if (preg_match("/[']+$/i", $value)) {
+                    $error = [
+                        'status' => '401',
+                        'error' => 'Disallowed Key Characters.'
+                    ];       
+                    return response($error, 401);
+                }
+            }
             return app('App\Http\Controllers\\' . $controller)->update($request, $id);
         });
 
@@ -53,7 +62,7 @@ $router->group(
         $router->post('/api/{controller}', function (Request $request, $controller) {
             $controller = ucwords($controller);
             foreach ($request->input() as $key => $value) {
-                if (!preg_match('/^[a-z0-9\: ]+$/i', $value)) {
+                if (preg_match("/[']+$/i", $value)) {
                     $error = [
                         'status' => '401',
                         'error' => 'Disallowed Key Characters.'

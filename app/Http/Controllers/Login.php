@@ -25,7 +25,7 @@ class Login extends Controller
         $user = User::where('email', $this->request->input('email'))->first();
         if (!$user) {
             return response()->json([
-                'error' => 'Email does not exist.'
+                'error' => 'Email Salah atau Tidak Terdaftar'
             ], 400);
         }
         // Verify the password and generate the token
@@ -36,7 +36,7 @@ class Login extends Controller
         }
         // Bad Request response
         return response()->json([
-            'error' => 'Email or password is wrong.'
+            'error' => 'Password Salah'
         ], 400);
     }
 
@@ -44,13 +44,10 @@ class Login extends Controller
     {
         $payload = [
             'iss' => "lumen-jwt", // Issuer of the token
-            'sub' => $user->id, // Subject of the token
-            'iat' => time(), // Time when JWT was issued. 
-            'exp' => time() + 60*60 // Expiration time
+            'uid' => $user->id, // Subject of the token
+            'iat' => time() // Time when JWT was issued. 
+            // 'exp' => time() + 60*60 // Expiration time
         ];
-        
-        // As you can see we are passing `JWT_SECRET` as the second parameter that will 
-        // be used to decode the token in the future.
         return JWT::encode($payload, env('JWT_SECRET'));
     }
 
@@ -72,6 +69,7 @@ class Login extends Controller
             $data->phone = $prm['phone'];
             $data->sex = $prm['sex'];
             $data->brthdt = $prm['brthdt'];
+            $data->img = 'default.jpg';
             $data->save();
 
             return response(['data' => ['status' => 'true','message' => 'Selamat, Akun Berhasil Dibuat']]);
